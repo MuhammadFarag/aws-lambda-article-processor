@@ -4,3 +4,7 @@ def inspect_empty_author(article):
         return article
     else:
         return article
+
+
+def content_length(article):
+    return len(article['content'].split(' '))
