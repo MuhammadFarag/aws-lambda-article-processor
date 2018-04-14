@@ -16,7 +16,7 @@ For the purposes of this exercise, I am assuming that I want to go throw a colle
 
 The operations I am going to perfrom
 
-1. Validate that a record has an author name attached
+1. Validate that a record has an author name attached, if not attach an error code
 2. Count the number of words in the content
 3. In the same time
 
