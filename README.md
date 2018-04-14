@@ -1,4 +1,4 @@
-## AWS Lambda Record Processor
+## AWS Lambda Article Processor
 A test app that attempts to recreate concpets from actor model design patterns in Lambda. The focus is on lambda rather than the on the programming language itself. I have choosen Python because it gives a quicker feedback loop and shorter cold start time.
 
 #### Motivation
@@ -8,19 +8,18 @@ I have had experience working with Akka Actor model and I feel that their are so
 I am going to treat each lambda as a stateless actor. It should be able to do one thing only (from domain prespective) and do it very well.
 
 #### Domain
-For the purposes of this exercise, I am assuming that I want to process records. Records have the following fields
+For the purposes of this exercise, I am assuming that I want to go throw a collection or a stream of articles. Each article has the following fields
 
-- id
-- name
-- description
-- value
+- author
+- content
+- priority
 
 The operations I am going to perfrom
 
-1. Count the number of words in the description
-2. In the same time
+1. Validate that a record has an author name attached
+2. Count the number of words in the content
+3. In the same time
 
-    - Capitalize the first letter of each word
+    - Capitalize the first letter of each word of the author name
 
-    - Duplicate the value
-3. Reject records that has negative value with appropriate error code
+    - Add five to the priority (this channel has higher priority compared to other channels
