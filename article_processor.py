@@ -11,7 +11,7 @@ def content_length(article, context):
     return article
 
 
-def pump_priority(article, context):
+def pump_rating(article, context):
     article['rating'] = article['rating'] + 5
     return article
 
