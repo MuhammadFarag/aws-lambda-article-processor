@@ -14,3 +14,8 @@ def content_length(article, context):
 def pump_priority(article, context):
     article['rating'] = article['rating'] + 5
     return article
+
+
+def capitalize_author_name(article, context):
+    article['author'] = article['author'].title()
+    return article

@@ -21,5 +21,9 @@ class TestLineParsing(unittest.TestCase):
         article = {"author": "", "content": "content body", "rating": 1, "errors": []}
         self.assertEqual(6, processor.pump_priority(article, None)['rating'])
 
+    def test_processor_capitalizes_author_name(self):
+        article = {"author": "author name", "content": "content body", "rating": 1, "errors": []}
+        self.assertEqual('Author Name', processor.capitalize_author_name(article, None)['author'])
+
 if __name__ == '__main__':
     unittest.main()
