@@ -25,5 +25,17 @@ class TestLineParsing(unittest.TestCase):
         article = {"author": "author name", "content": "content body", "rating": 1, "errors": []}
         self.assertEqual('Author Name', processor.capitalize_author_name(article, None)['author'])
 
+    def test_naive_merge_capitalized_author_and_pumped_rating(self):
+        capitalized = {"author": "Author Name", "content": "content body", "rating": 1, "errors": []}
+        pumpedRating = {"author": "author name", "content": "content body", "rating": 6, "errors": []}
+        expected = {"author": "Author Name", "content": "content body", "rating": 6, "errors": []}
+        self.assertEqual(expected, processor.naive_merge_capitalized_author_and_pumped_rating([capitalized, pumpedRating], None))
+
+    def test_naive_merge_capitalized_author_and_pumped_rating_reversed_input_list(self):
+        capitalized = {"author": "Author Name", "content": "content body", "rating": 1, "errors": []}
+        pumpedRating = {"author": "author name", "content": "content body", "rating": 6, "errors": []}
+        expected = {"author": "Author Name", "content": "content body", "rating": 6, "errors": []}
+        self.assertEqual(expected, processor.naive_merge_capitalized_author_and_pumped_rating([pumpedRating, capitalized], None))
+
 if __name__ == '__main__':
     unittest.main()
