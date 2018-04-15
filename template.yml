@@ -28,6 +28,12 @@ Resources:
       Handler: article_processor.pump_rating
       Runtime: python3.6
       CodeUri: .
+  NaiveMergeFuntion:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: article_processor.naive_merge_capitalized_author_and_pumped_rating
+      Runtime: python3.6
+      CodeUri: .
 
   StatesExecutionRole:
     Type: "AWS::IAM::Role"
@@ -94,6 +100,12 @@ Resources:
                       }
                     }
                   ],
+                  "Next": "ConsolidateParallelBranches"
+                },
+                "ConsolidateParallelBranches": {
+                  "Type": "Task",
+                  "Resource": "${naiveMergeFunctionArn}",
+                  "InputPath": "$.output",
                   "End": true
                 }
               }
@@ -101,5 +113,6 @@ Resources:
           - {inspectEmptyAuthorFunctionArn: !GetAtt [ InspectEmptyAuthorFunction, Arn ],
               contentLengthFunctionArn: !GetAtt [ ContentLengthFunction, Arn ],
               capitalizeAuthorFunctionArn: !GetAtt [ CapitalizeAuthorFunction, Arn ],
-              pumpUpRatingFunctionArn: !GetAtt [ PumpUpRatingFunction, Arn ]}
+              pumpUpRatingFunctionArn: !GetAtt [ PumpUpRatingFunction, Arn ],
+              naiveMergeFunctionArn: !GetAtt [ NaiveMergeFuntion, Arn ]}
       RoleArn: !GetAtt [ StatesExecutionRole, Arn ]
