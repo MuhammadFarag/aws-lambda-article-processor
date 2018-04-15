@@ -1,0 +1,11 @@
+version: 0.1
+
+phases:
+  test:
+    commands:
+      - echo Build started on `date`
+      - echo Compiling the Python code...
+      - python article_processor_test.py
+  post_build:
+    commands:
+      - echo Build completed on `date`
