@@ -63,15 +63,43 @@ Resources:
                 "InspectEmptyAuthor": {
                   "Type": "Task",
                   "Resource": "${inspectEmptyAuthorFunctionArn}",
-                  "Next" :"ContentLength"
+                  "Next": "ContentLength"
                 },
                 "ContentLength": {
                   "Type": "Task",
                   "Resource": "${contentLengthFunctionArn}",
                   "End": true
+                },
+                "Paralleling": {
+                  "Type": "Parallel",
+                  "Branches": [
+                    {
+                      "StartAt": "CapitalizeAuthor",
+                      "States": {
+                        "Add": {
+                          "Type": "Task",
+                          "Resource": "${capitalizeAuthorFunctionArn}",
+                          "End": true
+                        }
+                      }
+                    },
+                    {
+                      "StartAt": "PumpUpRating",
+                      "States": {
+                        "Subtract": {
+                          "Type": "Task",
+                          "Resource": "${pumpUpRatingFunctionArn}",
+                          "End": true
+                        }
+                      }
+                    }
+                  ],
+                  "End": true
                 }
               }
             }
           - {inspectEmptyAuthorFunctionArn: !GetAtt [ InspectEmptyAuthorFunction, Arn ],
-              contentLengthFunctionArn: !GetAtt [ ContentLengthFunction, Arn ]}
+              contentLengthFunctionArn: !GetAtt [ ContentLengthFunction, Arn ],
+              capitalizeAuthorFunctionArn: !GetAtt [ CapitalizeAuthorFunction, Arn ],
+              pumpUpRatingFunctionArn: !GetAtt [ PumpUpRatingFunction, Arn ]}
       RoleArn: !GetAtt [ StatesExecutionRole, Arn ]
