@@ -15,7 +15,7 @@ class TestLineParsing(unittest.TestCase):
 
     def test_processor_will_count_the_number_of_words_in_the_content(self):
         article = {"author": "", "content": "content body", "rating": 1, "errors": []}
-        self.assertEqual(2, processor.content_length(article, None))
+        self.assertEqual(2, processor.content_length(article, None)['length'])
 
 
 if __name__ == '__main__':

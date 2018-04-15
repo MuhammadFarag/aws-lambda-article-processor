@@ -7,4 +7,5 @@ def inspect_empty_author(article, context):
 
 
 def content_length(article, context):
-    return len(article['content'].split(' '))
+    article['length'] = len(article['content'].split(' '))
+    return article
