@@ -120,6 +120,21 @@ Resources:
             Resource: "*"
             Effect: Allow
           Version: '2012-10-17'
+  CloudFormationExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          Action:
+            - 'sts:AssumeRole'
+          Effect: Allow
+          Principal:
+            Service:
+              - cloudformation.amazonaws.com
+      Path: /
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/AdministratorAccess'
   PipelineBucket:
     Type: AWS::S3::Bucket
     DeletionPolicy: Delete
@@ -136,6 +151,9 @@ Resources:
         Type: !Ref BuildType
         ComputeType: !Ref BuildComputeType
         Image: !Sub ${BuildImage}
+        EnvironmentVariables:
+          - Name: BUILD_OUTPUT_BUCKET
+            Value: !Ref PipelineBucket
       Source:
         Type: CODEPIPELINE
       TimeoutInMinutes: 10
@@ -144,38 +162,59 @@ Resources:
     Properties:
       RoleArn: !GetAtt CodePipelineRole.Arn
       Stages:
-      - Name: Source
-        Actions:
-        - InputArtifacts: []
-          Name: Source
-          ActionTypeId:
-            Category: Source
-            Owner: ThirdParty
-            Version: '1'
-            Provider: GitHub
-          OutputArtifacts:
-          - Name: SourceOutput
-          Configuration:
-            Owner: !Ref GitHubUser
-            Repo: !Ref GitHubRepo
-            Branch: !Ref GitHubBranch
-            OAuthToken: !Ref GitHubToken
-          RunOrder: 1
-      - Name: Deploy
-        Actions:
-        - Name: Artifact
-          ActionTypeId:
-            Category: Build
-            Owner: AWS
-            Version: '1'
-            Provider: CodeBuild
-          InputArtifacts:
-          - Name: SourceOutput
-          OutputArtifacts:
-          - Name: DeployOutput
-          Configuration:
-            ProjectName: !Ref CodeBuildTestProcessor
-          RunOrder: 1
+        - Name: Source
+          Actions:
+            - Name: CodeCommitRepo
+              ActionTypeId:
+                Category: Source
+                Owner: ThirdParty
+                Version: '1'
+                Provider: GitHub
+              Configuration:
+                Owner: !Ref GitHubUser
+                Repo: !Ref GitHubRepo
+                Branch: !Ref GitHubBranch
+                OAuthToken: !Ref GitHubToken
+
+              OutputArtifacts:
+                - Name: SourceOutput
+              RunOrder: 1
+        - Name: Build
+          Actions:
+            - Name: CodeBuild
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Provider: CodeBuild
+                Version: 1
+              Configuration:
+                ProjectName: !Ref CodeBuildTestProcessor
+              InputArtifacts:
+                - Name: SourceOutput
+              OutputArtifacts:
+                - Name: DeployOutput
+              Configuration:
+                ProjectName: !Ref CodeBuildTestProcessor
+              RunOrder: 1
+        - Name: Beta
+          Actions:
+            - Name: CreateChangeSet
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Provider: CloudFormation
+                Version: 1
+              Configuration:
+                ActionMode: CHANGE_SET_REPLACE
+                RoleArn: !GetAtt CloudFormationExecutionRole.Arn
+                StackName: !Sub '${AWS::StackName}-Stack-Beta'
+                ChangeSetName: !Sub '${AWS::StackName}-ChangeSet-Beta'
+                TemplatePath: DeployOutput::app-output_sam.yaml
+                Capabilities: CAPABILITY_IAM
+                ParameterOverrides: '{ "Stage": "beta" }'
+              InputArtifacts:
+                - Name: DeployOutput
+              RunOrder: 1
       ArtifactStore:
         Type: S3
         Location: !Ref PipelineBucket

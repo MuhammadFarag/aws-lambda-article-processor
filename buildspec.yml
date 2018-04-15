@@ -6,6 +6,12 @@ phases:
       - echo Build started on `date`
       - echo Compiling the Python code...
       - python article_processor_test.py
+      - aws cloudformation package --template-file template.yml --s3-bucket $BUILD_OUTPUT_BUCKET --output-template-file app-output_sam.yaml
   post_build:
     commands:
       - echo Build completed on `date`
+
+artifacts:
+  files:
+    - app-output_sam.yaml
+  discard-paths: yes
