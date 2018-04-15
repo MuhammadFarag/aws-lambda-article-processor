@@ -196,7 +196,7 @@ Resources:
               Configuration:
                 ProjectName: !Ref CodeBuildTestProcessor
               RunOrder: 1
-        - Name: Beta
+        - Name: Deploy
           Actions:
             - Name: CreateChangeSet
               ActionTypeId:
@@ -214,6 +214,21 @@ Resources:
               InputArtifacts:
                 - Name: DeployOutput
               RunOrder: 1
+            - Name: ExecuteChangeSet
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Provider: CloudFormation
+                Version: 1
+              Configuration:
+                ActionMode: CHANGE_SET_EXECUTE
+                RoleArn: !GetAtt CloudFormationExecutionRole.Arn
+                StackName: !Sub '${AWS::StackName}-Stack-Beta'
+                ChangeSetName: !Sub '${AWS::StackName}-ChangeSet-Beta'
+              OutputArtifacts:
+                - Name: !Sub '${AWS::StackName}BetaChangeSet'
+              RunOrder: 2
+
       ArtifactStore:
         Type: S3
         Location: !Ref PipelineBucket
