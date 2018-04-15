@@ -45,7 +45,7 @@ Resources:
         !Sub
           - |-
             {
-              "Comment": "A Hello World AWL example using an AWS Lambda function",
+              "Comment": "Article Processing State Machine",
               "StartAt": "InspectEmptyAuthor",
               "States": {
                 "InspectEmptyAuthor": {
