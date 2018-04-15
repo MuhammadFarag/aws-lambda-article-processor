@@ -68,7 +68,7 @@ Resources:
                 "ContentLength": {
                   "Type": "Task",
                   "Resource": "${contentLengthFunctionArn}",
-                  "End": true
+                  "Next": "Paralleling"
                 },
                 "Paralleling": {
                   "Type": "Parallel",
@@ -76,7 +76,7 @@ Resources:
                     {
                       "StartAt": "CapitalizeAuthor",
                       "States": {
-                        "Add": {
+                        "CapitalizeAuthor": {
                           "Type": "Task",
                           "Resource": "${capitalizeAuthorFunctionArn}",
                           "End": true
@@ -86,7 +86,7 @@ Resources:
                     {
                       "StartAt": "PumpUpRating",
                       "States": {
-                        "Subtract": {
+                        "PumpUpRating": {
                           "Type": "Task",
                           "Resource": "${pumpUpRatingFunctionArn}",
                           "End": true
