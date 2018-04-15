@@ -9,11 +9,23 @@ Resources:
     Properties:
       Handler: article_processor.inspect_empty_author
       Runtime: python3.6
-      CodeUri: ./
+      CodeUri: .
   ContentLengthFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: article_processor.content_length
+      Runtime: python3.6
+      CodeUri: .
+  CapitalizeAuthorFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: article_processor.capitalize_author_name
+      Runtime: python3.6
+      CodeUri: .
+  PumpUpRatingFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: article_processor.pump_priority
       Runtime: python3.6
       CodeUri: .
 
@@ -60,5 +72,6 @@ Resources:
                 }
               }
             }
-          - {inspectEmptyAuthorFunctionArn: !GetAtt [ InspectEmptyAuthorFunction, Arn ], contentLengthFunctionArn: !GetAtt [ ContentLengthFunction, Arn ]}
+          - {inspectEmptyAuthorFunctionArn: !GetAtt [ InspectEmptyAuthorFunction, Arn ],
+              contentLengthFunctionArn: !GetAtt [ ContentLengthFunction, Arn ]}
       RoleArn: !GetAtt [ StatesExecutionRole, Arn ]
