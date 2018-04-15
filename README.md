@@ -43,6 +43,8 @@ _Lambda Functions_ and _Step Function State Machine_ are used together to create
 
 ## Notes
 
+### State machine definition within template.yml
+
 I find embedding FSM JSON definition into [template.yml] YAML template to be very annoying. I couldn't find a way to import the FSM definition from a separate file. I am considering using a script to embed JSON into the template in the build stage in the future and keep both separated. Currently, they look like this:
 
 ```YAML
@@ -69,3 +71,10 @@ Properties:
       - {inspectEmptyAuthorFunctionArn: !GetAtt [ InspectEmptyAuthorFunction, Arn ], contentLengthFunctionArn: !GetAtt [ ContentLengthFunction, Arn ]}
 
 ```
+
+
+### Todo:
+
+- Create a unit test that resembles the pipeline.
+- Create an end-to-end test because unit tests are not enough.
+- Implement a more complicated workflow including a State Machine (we only use the state machine here to glue Lambdas)
