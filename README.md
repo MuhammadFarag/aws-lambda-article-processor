@@ -27,6 +27,8 @@ The operations I am going to perform
 
 ## Implementation
 
+![Current FSM implementation](state-machine.png)
+
 _Lambda Functions_ and _Step Function State Machine_ are used together to create a pipeline that resembles the implementation mentioned above.
 
 ### Deployment pipeline
