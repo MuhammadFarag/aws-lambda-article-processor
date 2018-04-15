@@ -105,7 +105,7 @@ Resources:
                 "ConsolidateParallelBranches": {
                   "Type": "Task",
                   "Resource": "${naiveMergeFunctionArn}",
-                  "InputPath": "$.output",
+                  "InputPath": "$.input",
                   "End": true
                 }
               }
