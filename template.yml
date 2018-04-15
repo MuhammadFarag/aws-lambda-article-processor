@@ -1,17 +1,12 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: Outputs the time
+
+Description: Inspect empty author
+
 Resources:
-  TimeFunction:
+  InspectFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: article_processor.inspect_empty_author
       Runtime: python3.6
       CodeUri: ./
-      Events:
-        MyTimeApi:
-          Type: Api
-          Properties:
-            Path: /
-            Method: ANY
-
