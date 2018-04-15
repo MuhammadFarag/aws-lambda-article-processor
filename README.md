@@ -22,4 +22,18 @@ The operations I am going to perfrom
 
     - Capitalize the first letter of each word of the author name
 
-    - Add five to the priority (this channel has higher priority compared to other channels
+    - Add five to the priority (this channel has higher priority compared to other channels)
+
+## Implementation
+
+_Lambda Functions_ and _Step Function State Machine_ are used together to create a pipeline that resembles the implementation mentioned above.
+
+### Deployment pipeline
+
+[pipeline.yaml] is a CloudFormation template that creates our three stages deployment. Those are `Source`, `Build` and `Deploy`.
+
+`Source` stage picks up the source code from Github (this repo).
+
+`Build` runs the [buildspec.yml] file, which in turn runs the unit tests and packages our application (I think in the future, this should be two separate stages)
+
+`Deploy` Creates and executes [template.yml] _CloudFormation_ template. The template includes both the definition of the lambda functions and the state machine definition.
