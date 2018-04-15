@@ -50,10 +50,15 @@ Resources:
               "States": {
                 "InspectEmptyAuthor": {
                   "Type": "Task",
-                  "Resource": "${lambdaArn}",
+                  "Resource": "${inspectEmptyAuthorFunctionArn}",
+                  "Next" :"ContentLength"
+                },
+                "ContentLength": {
+                  "Type": "Task",
+                  "Resource": "${contentLengthFunctionArn}",
                   "End": true
                 }
               }
             }
-          - {lambdaArn: !GetAtt [ InspectEmptyAuthorFunction, Arn ]}
+          - {inspectEmptyAuthorFunctionArn: !GetAtt [ InspectEmptyAuthorFunction, Arn ], contentLengthFunctionArn: !GetAtt [ ContentLengthFunction, Arn ]}
       RoleArn: !GetAtt [ StatesExecutionRole, Arn ]
