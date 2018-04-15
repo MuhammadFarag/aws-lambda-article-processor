@@ -211,7 +211,6 @@ Resources:
                 ChangeSetName: !Sub '${AWS::StackName}-ChangeSet-Beta'
                 TemplatePath: DeployOutput::app-output_sam.yaml
                 Capabilities: CAPABILITY_IAM
-                ParameterOverrides: '{ "Stage": "beta" }'
               InputArtifacts:
                 - Name: DeployOutput
               RunOrder: 1
