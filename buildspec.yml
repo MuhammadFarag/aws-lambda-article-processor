@@ -1,7 +1,7 @@
 version: 0.1
 
 phases:
-  test:
+  build:
     commands:
       - echo Build started on `date`
       - echo Compiling the Python code...
