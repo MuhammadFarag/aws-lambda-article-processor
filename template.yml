@@ -46,9 +46,9 @@ Resources:
           - |-
             {
               "Comment": "A Hello World AWL example using an AWS Lambda function",
-              "StartAt": "HelloWorld",
+              "StartAt": "InspectEmptyAuthor",
               "States": {
-                "HelloWorld": {
+                "InspectEmptyAuthor": {
                   "Type": "Task",
                   "Resource": "${lambdaArn}",
                   "End": true
