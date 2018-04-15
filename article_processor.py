@@ -9,3 +9,8 @@ def inspect_empty_author(article, context):
 def content_length(article, context):
     article['length'] = len(article['content'].split(' '))
     return article
+
+
+def pump_priority(article, context):
+    article['rating'] = article['rating'] + 5
+    return article

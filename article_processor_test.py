@@ -17,6 +17,9 @@ class TestLineParsing(unittest.TestCase):
         article = {"author": "", "content": "content body", "rating": 1, "errors": []}
         self.assertEqual(2, processor.content_length(article, None)['length'])
 
+    def test_processor_adds_five_to_the_value_of_rating(self):
+        article = {"author": "", "content": "content body", "rating": 1, "errors": []}
+        self.assertEqual(6, processor.pump_priority(article, None)['rating'])
 
 if __name__ == '__main__':
     unittest.main()

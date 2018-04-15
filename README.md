@@ -23,7 +23,7 @@ The operations I am going to perform
 
     - Capitalize the first letter of each word of the author name
 
-    - Add five to the priority (this channel has higher priority compared to other channels)
+    - Add five to the rating (this channel has higher rating compared to other channels)
 
 ## Implementation
 
