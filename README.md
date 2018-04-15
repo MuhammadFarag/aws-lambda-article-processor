@@ -2,6 +2,10 @@
 ## AWS Lambda Article Processor
 This repo contains A test app that attempts to recreate concepts from actor model design patterns in Lambda. The focus is on lambda rather than the on the programming language itself. I have chosen Python because it gives a quicker feedback loop and shorter cold start time.
 
+<p align="center">
+<img src="state-machine.png" alt="Current FSM implementation">
+</p>
+
 #### Motivation
 I have had experience working with Akka Actor model, and I feel that there is some degree of resemblance between lambda functions and stateless actors. However, I need to understand more to be able to draw that comparison. TDD'ing, writing and deploying actors is rather simple in Scala. I am curious if the same can be achieved with AWS lambda.
 
@@ -26,8 +30,6 @@ The operations I am going to perform
     - Add five to the rating (this channel has higher rating compared to other channels)
 
 ## Implementation
-
-![Current FSM implementation](state-machine.png)
 
 _Lambda Functions_ and _Step Function State Machine_ are used together to create a pipeline that resembles the implementation mentioned above.
 
