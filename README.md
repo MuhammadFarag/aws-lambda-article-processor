@@ -40,3 +40,32 @@ _Lambda Functions_ and _Step Function State Machine_ are used together to create
 `Build` runs the [buildspec.yml] file, which in turn runs the unit tests and packages our application (I think in the future, this should be two separate stages)
 
 `Deploy` Creates and executes [template.yml] _CloudFormation_ template. The template includes both the definition of the lambda functions and the state machine definition.
+
+## Notes
+
+I find embedding FSM JSON definition into [template.yml] YAML template to be very annoying. I couldn't find a way to import the FSM definition from a separate file. I am considering using a script to embed JSON into the template in the build stage in the future and keep both separated. Currently, they look like this:
+
+```YAML
+Properties:
+  DefinitionString:
+    !Sub
+      - |-
+        {
+          "Comment": "Article Processing State Machine",
+          "StartAt": "InspectEmptyAuthor",
+          "States": {
+            "InspectEmptyAuthor": {
+              "Type": "Task",
+              "Resource": "${inspectEmptyAuthorFunctionArn}",
+              "Next" :"ContentLength"
+            },
+            "ContentLength": {
+              "Type": "Task",
+              "Resource": "${contentLengthFunctionArn}",
+              "End": true
+            }
+          }
+        }
+      - {inspectEmptyAuthorFunctionArn: !GetAtt [ InspectEmptyAuthorFunction, Arn ], contentLengthFunctionArn: !GetAtt [ ContentLengthFunction, Arn ]}
+
+```
