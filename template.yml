@@ -4,9 +4,15 @@ Transform: AWS::Serverless-2016-10-31
 Description: Inspect empty author
 
 Resources:
-  InspectFunction:
+  InspectEmptyAuthorFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: article_processor.inspect_empty_author
+      Runtime: python3.6
+      CodeUri: ./
+  ContentLengthFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: article_processor.content_length
       Runtime: python3.6
       CodeUri: ./
